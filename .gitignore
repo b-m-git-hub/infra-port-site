@@ -1,0 +1,5 @@
+# Terraform files to ignore (API keys etc)
+variables.tf
+terraform.tfvars
+*.tfstate
+.terraform/
