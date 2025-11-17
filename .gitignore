@@ -1,5 +1,9 @@
-# Terraform files to ignore (API keys etc)
-variables.tf
+# Terraform
 terraform.tfvars
 *.tfstate
+*.tfstate.backup
+*.tfplan
 .terraform/
+
+# Ansible
+ansible/
