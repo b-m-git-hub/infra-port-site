@@ -1,0 +1,22 @@
+- name: Install Certbot and the Nginx plugin
+  apt:
+    name:
+      - certbot
+      - python3-certbot-nginx
+    state: present
+    update_cache: yes
+
+- name: Obtain and install the Let's Encrypt certificate
+  command: >
+    certbot --nginx --non-interactive --agree-tos --email {{ cert_email }} -d {{ server_name }} -d www.{{ server_name}}
+  args:
+    creates: /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
+  notify: Reload Nginx
+
+- name: Set up automatic renewal
+  cron:
+    name: "Renew Let's Encrypt certificates"
+    job: "certbot renew --quiet --post-hook 'systemctl reload nginx'"
+    minute: "0"
+    hour: "0"
+    day: "*/1"

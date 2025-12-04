@@ -6,4 +6,15 @@ terraform.tfvars
 .terraform/
 
 # Ansible
-ansible/
+ansible/roles/nginx/vars/main.yaml
+.retry
+.vault_pass
+.vault_password
+.ansible_vault
+__pycache__/
+*.pyc
+*.pyo
+*.pem
+*.key
+id_rsa
+id_rsa.pub

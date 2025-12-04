@@ -1,0 +1,48 @@
+- name: Check if the SSL certificate already exists
+  stat:
+    path: /etc/letsencrypt/live/{{ server_name }}/fullchain.pem
+  register: ssl_cert_check
+
+- name: Configure SSL based on certificate availability
+  set_fact:
+    nginx_enable_ssl: "{{ ssl_cert_check.stat.exists }}"
+
+- name: Update apt cache and install Nginx
+  apt:
+    name: nginx
+    state: latest
+    update_cache: yes
+
+- name: Apply Nginx template
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/sites-available/default
+  notify: Restart Nginx
+
+- name: Ensure Nginx is enabled and running
+  service:
+    name: nginx
+    state: started
+    enabled: true
+
+- name: Create the web root directory
+  file:
+    path: "{{ nginx_root }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+
+- name: Ensure rsync is installed (required for synchronize module)
+  apt:
+    name: rsync
+    state: present
+
+- name: Deploy static site files
+  synchronize:
+    src: "../../bryan-port-site/dist/"
+    dest: "{{ nginx_root }}"
+    delete: yes
+    recursive: yes
+    owner: no
+    group: no
