@@ -13,6 +13,12 @@
     state: latest
     update_cache: yes
 
+- name: Add deploy user to www-data group
+  user:
+    name: deploy
+    groups: www-data
+    append: yes
+
 - name: Apply Nginx template
   template:
     src: nginx.conf.j2
@@ -31,7 +37,7 @@
     state: directory
     owner: www-data
     group: www-data
-    mode: '0755'
+    mode: '0775'
 
 - name: Ensure rsync is installed (required for synchronize module)
   apt:
