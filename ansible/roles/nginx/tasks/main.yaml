@@ -44,6 +44,15 @@
     name: rsync
     state: present
 
+- name: Fix permissions
+  file:
+    path: "{{ nginx_root }}"
+    state: directory
+    recurse: yes
+    owner: www-data
+    group: www-data
+    mode: '0775'
+
 - name: Deploy static site files
   synchronize:
     src: "../../bryan-port-site/dist/"
