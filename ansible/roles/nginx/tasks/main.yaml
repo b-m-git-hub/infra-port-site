@@ -35,11 +35,12 @@
   file:
     path: "{{ nginx_root }}"
     state: directory
+    recurse: yes
     owner: www-data
     group: www-data
-    mode: '0775'
+    mode: '2775'
 
-- name: Ensure rsync is installed (required for synchronize module)
+- name: Ensure rsync is installed
   apt:
     name: rsync
     state: present
@@ -51,7 +52,7 @@
     recurse: yes
     owner: www-data
     group: www-data
-    mode: '0775'
+    mode: '2775'
 
 - name: Deploy static site files
   synchronize:

@@ -2,7 +2,8 @@
   user:
     name: deploy
     shell: /bin/bash
-    groups: sudo
+    groups: sudo, www-data
+    append: yes
     create_home: yes
 
 - name: Add SSH key for deploy user
