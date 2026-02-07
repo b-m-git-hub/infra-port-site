@@ -54,18 +54,3 @@
     group: www-data
     mode: '2775'
 
-- name: Build Astro site
-  delegate_to: localhost
-  command: npm run build
-  args:
-    chdir: "{{ playbook_dir }}/../../bryan-port-site"
-  become: no
-
-- name: Deploy static site files
-  synchronize:
-    src: "../../bryan-port-site/dist/"
-    dest: "{{ nginx_root }}"
-    delete: yes
-    recursive: yes
-    owner: no
-    group: no
